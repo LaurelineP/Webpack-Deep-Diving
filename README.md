@@ -51,6 +51,8 @@ From now on, we'll get into the real configuration and replicate this default be
     ```
 - in package.json: change start script:
     ```"start": "webpack --config webpack.config.js"```
+
+
 ### What is happening within webpack.config.js ?
 The general Webpack behavior is to check if there is any config file ( cf.: webpack.config.js ),
 if not it will run its default behavior through the cli ```webpack``` : requiring ```src``` & ```src/index.js``` to build the ```dist``` folder with its bundle ```main.js```
