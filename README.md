@@ -22,7 +22,7 @@ Install:
 Small setting adjustment:
 - create your directory at the root: src
 - ... in wich you create an ```index.js```
-- in package.json: ```"start": "webpack",```
+- in package.json add a script: ```"build": "webpack",```
 - in .gitignore: add ```dist``` ( this folder will be rebuild each time you run the command )
 - in server.js: ```app.use(express.static( __dirname, 'dist'))``` ( resolving path for all static files )
 - in index.html, before the ending body tag: ```<script src="main.js"></script>```
@@ -30,10 +30,11 @@ NB: At this stage, webpack is not requiring any config ( unlike the previous web
 
 
 Verification:
-Now if you run on your terminal ```npm start```: you should be able to notice that a directory ```'dist'``` was created in which one there is a ```main.js```.
+Now if you run on your terminal ```npm build```: you should be able to notice that a directory ```'dist'``` was created in which one there is a ```main.js```.
 And then when you launch your server everything works fine.
 
-## Init webpack configuration:
+## CONFIGURATION:
+### Init configuration: default behavior
 So far, we did the just required setting to enable webpack default behavior.
 From now on, we'll get into the real configuration and replicate this default behavior:
 - create ```webpack.config.js```
@@ -50,10 +51,10 @@ From now on, we'll get into the real configuration and replicate this default be
     }
     ```
 - in package.json: change start script:
-    ```"start": "webpack --config webpack.config.js"```
+    ```"build": "webpack --config webpack.config.js"```
 
 
-### What is happening within webpack.config.js ?
+#### What is happening within webpack.config.js ?
 The general Webpack behavior is to check if there is any config file ( cf.: webpack.config.js ),
 if not it will run its default behavior through the cli ```webpack``` : requiring ```src``` & ```src/index.js``` to build the ```dist``` folder with its bundle ```main.js```
 Here on the first step of this stage we created a webpack config
@@ -63,3 +64,15 @@ and the second step is the definition of the behavior we are expecting:
 -  ```"mode"``` tells how it should display the main.js code ( as minified 
 for production mode ( default behavior if not specified ) or a readable 
 version with development mode ).
+
+### Configurations with loaders
+#### What is loaders ?
+    Loaders are kind of 'tasks' or helpers that outputs/transform Javascript code from the differents languages your project uses ( css, sass, json, typescript etc ... ).
+    
+- Sass requires :
+    - style-loader: creating style nodes from JS strings
+    - css-loader: translate css into CommonJS
+    - sass-loader: compile sass into css
+    - node-sass: required by sass-loader to complete its compiling
+    - / ! \ NB: currently when you install node-sass: this one is depending on node-gyp which depends on tar which currently have a patching issue so npm audit warns you of a high security vulnerability
+    - / ! \ will continue without taking care of the error --> will need to come back and check that later.
