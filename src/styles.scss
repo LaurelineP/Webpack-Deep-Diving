@@ -1,4 +1,18 @@
 $color: #DDD;
 body {
-    background-color:$color;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+#main {
+    position: relative;
+    margin: auto;
+    .title {
+        text-align: center;
+    }
+    img {
+        height: inherit;
+    }
+
 }
