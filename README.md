@@ -184,3 +184,8 @@ allowing you to improve your developping workflow.
     ```
     "start": "webpack-dev-server --config webpack.dev.js --open"
     ```
+
+### :diamond_shape_with_a_dot_inside: EXTRA USEFULL LOADERS
+- ```file-loader```: Emits the file into the output folder and returns the (relative) URL
+-  ```htlm-loader```: Exports HTML as string. HTML is minimized when the compiler demands.
+
