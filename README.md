@@ -70,30 +70,45 @@ version with development mode ).
     Loaders are kind of 'tasks' or helpers that outputs/transform Javascript code from the differents languages your project uses ( css, sass, json, typescript etc ... ).
     
 - Sass requires :
-    - style-loader: creating style nodes from JS strings
-    - css-loader: translate css into CommonJS
-    - sass-loader: compile sass into css
-    - node-sass: required by sass-loader to complete its compiling
-    - / ! \ NB: currently when you install node-sass: this one is depending on node-gyp which depends on tar which currently have a patching issue so npm audit warns you of a high security vulnerability
-    - / ! \ will continue without taking care of the error --> will need to come back and check that later.
+    - ```style-loader```: creating style nodes from JS strings
+    - ```css-loader```: translate css into CommonJS
+    - ```sass-loader```: compile sass into css
+    - ```node-sass```: required by sass-loader to complete its compiling
 
+To keep going setting Sass:
+    ```
+    ...
+    module: {
+        rules: [
+            {
+                test: /\.scss$/,        // regex testing files ending by .scss
+                use: [
+                    "style-loader",     // 3. inject css into html
+                    "css-loader",       // 2. turns css into commonjs
+                    "sass-loader"       // 3. turns sass into css
+                ]
+            }
+        ]
+    }
+    ```
 
 ## CACHING AND PLUGINS:
-Caching is when a browser store a file on refresh ( which actually helps the browser to reload faster ).
-However, here it is a main.js which could be reload and cached and this file get to be rebuild on code changed and save ( the browser at the point makes no differences because it's not looking inside the file, just the name )
-So from now on we will set the environment to revuild the whole html + inject dynamically the main.js file , all that thanks to a plugins
+Caching is when a browser store a file and use it for next refreshes ( which actually helps the browser to reload faster ).
+However, in this case, our dynamic ```main.js``` file here will be stored at first then, the browser will check if there are different filename, if not it will must likely take the one in the cache ( even though we did changed some code within )
+So from now on we will set the environment to rebuild the whole html + inject dynamically the main.js file , all that thanks to plugins.
 
-Plugins give the options to customize webpack's building process
+Plugins give the options to customize webpack's building process, and in this case with html-webpack-plugin, will add a hash-content allowing to tell that even though the finename is the same, if there is any changes, this very file did changed.
 
 ### Installation :
-Html-webpack-plugin: ``` npm install --save-dev html-webpack-plugin``` --> for each build, recreating an html file with hashcontent if any changes have been made.
+Html-webpack-plugin: ``` npm install --save-dev html-webpack-plugin``` --> for each build, recreating an html file with hash-content if any changes have been made.
 But there are plenty more and you can also bind a templater ( ejs, pug, mustache, etc ...)
-- delete your index.html in the root
-- go to ```src```and create a ```template.html``` that our plugin will use
-- write your html without the script as webpack will inject the correct file
+
+- delete your index.html in the root ( cause webpack will no use it anymore with this plugin)
+- go to ```src```and create a ```template.html``` ( that our plugin will use )
+- write your html without the script linking to our ```main.js``` file as webpack will inject the correct file
 - in webpack add:
-``
-const HtmlWebpackPlugin = reuqire('html-webpack-plugin');
+```
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 ...
 plugins: [
     new HtmlWebpackPlugin({
@@ -101,4 +116,14 @@ plugins: [
     })
 ]
 ```
+- then modify the output property to add the hash content:
+``` 
+...
+output: {
+    ...
+    filename: 'main[contentHash].js'
+}
+```
+
+NB: new HtmlWebpackPlugin() without argument will auto generate an html ( not taking care of the html you painfully wrote :p )
 Later on run your ```npm run build``` and now you should be able to see within your ```dist``` an html created as ```index.html```
