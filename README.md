@@ -192,3 +192,23 @@ allowing you to improve your developping workflow.
 
 ### :diamond_shape_with_a_dot_inside: EXTRA USEFULL PLUGIN
 - ```clean-webpack-plugin```: aim to clean/remove your build folder(s)
+
+
+### :diamond_shape_with_a_dot_inside: MULTIPLE ENTRY POINT
+#### What is multiple entry for ?
+Let's say you are working with vendor file ( == to third-party assets convention name )
+
+#### How ?
+- in ```webpack.config.js```: entry will become an object where you'll define proprieties corresponding to each file path:
+    ```entry: {
+            main: './src/index.js,
+            vendor: './src/vendor.js'
+       }
+    ````
+- in ```webpack.dev.js``` and ```webpack.prod.js``` modify the output filename with dynamic value, add [contentHash] for the prod mode
+    ```
+    ...
+    output: {
+        filename: "[name]-bundle.js",
+        ...
+    }

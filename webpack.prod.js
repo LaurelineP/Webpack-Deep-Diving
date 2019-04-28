@@ -6,7 +6,7 @@ const config = require('./webpack.config');
 module.exports = merge(config, {
     mode: "production",
     output: {
-        filename: "main-[contentHash].js",
+        filename: "[name]-[contentHash]-bundle.js",
         path: path.resolve(__dirname, 'dist')
     },
     plugins: [
