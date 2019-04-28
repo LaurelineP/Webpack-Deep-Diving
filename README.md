@@ -76,3 +76,29 @@ version with development mode ).
     - node-sass: required by sass-loader to complete its compiling
     - / ! \ NB: currently when you install node-sass: this one is depending on node-gyp which depends on tar which currently have a patching issue so npm audit warns you of a high security vulnerability
     - / ! \ will continue without taking care of the error --> will need to come back and check that later.
+
+
+## CACHING AND PLUGINS:
+Caching is when a browser store a file on refresh ( which actually helps the browser to reload faster ).
+However, here it is a main.js which could be reload and cached and this file get to be rebuild on code changed and save ( the browser at the point makes no differences because it's not looking inside the file, just the name )
+So from now on we will set the environment to revuild the whole html + inject dynamically the main.js file , all that thanks to a plugins
+
+Plugins give the options to customize webpack's building process
+
+### Installation :
+Html-webpack-plugin: ``` npm install --save-dev html-webpack-plugin``` --> for each build, recreating an html file with hashcontent if any changes have been made.
+But there are plenty more and you can also bind a templater ( ejs, pug, mustache, etc ...)
+- delete your index.html in the root
+- go to ```src```and create a ```template.html``` that our plugin will use
+- write your html without the script as webpack will inject the correct file
+- in webpack add:
+``
+const HtmlWebpackPlugin = reuqire('html-webpack-plugin');
+...
+plugins: [
+    new HtmlWebpackPlugin({
+        template: './src/template.html'
+    })
+]
+```
+Later on run your ```npm run build``` and now you should be able to see within your ```dist``` an html created as ```index.html```
