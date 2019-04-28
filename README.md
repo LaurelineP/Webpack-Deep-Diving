@@ -6,7 +6,7 @@ than all you already have: cf "bundle"
 - bundles files and assets
 - manages dependencies.
 
-## START WEBPACK INSTALLATION
+## :rocket: QUICK SETTUP
 Good to know:
 - current version: 4
 - requires a ```src``` folder
@@ -14,12 +14,12 @@ Good to know:
 - output expected in ```dist``` : ```main.js```
 
 
-Install:
+### :round_pushpin: Install:
 - webpack:```npm install --save-dev webpack webpack-cli```
 - express: ```npm install express```
 
 
-Small setting adjustment:
+### :round_pushpin: Small setting adjustments:
 - create your directory at the root: src
 - ... in wich you create an ```index.js```
 - in package.json add a script: ```"build": "webpack",```
@@ -33,8 +33,8 @@ Verification:
 Now if you run on your terminal ```npm build```: you should be able to notice that a directory ```'dist'``` was created in which one there is a ```main.js```.
 And then when you launch your server everything works fine.
 
-## CONFIGURATION:
-### Init configuration: default behavior
+## :wrench: CONFIGURATION:
+### :diamond_shape_with_a_dot_inside: INITIATE DEFAULT BEHAVIOR CONFIGURATION
 So far, we did the just required setting to enable webpack default behavior.
 From now on, we'll get into the real configuration and replicate this default behavior:
 - create ```webpack.config.js```
@@ -57,16 +57,19 @@ From now on, we'll get into the real configuration and replicate this default be
 #### What is happening within webpack.config.js ?
 The general Webpack behavior is to check if there is any config file ( cf.: webpack.config.js ),
 if not it will run its default behavior through the cli ```webpack``` : requiring ```src``` & ```src/index.js``` to build the ```dist``` folder with its bundle ```main.js```
-Here on the first step of this stage we created a webpack config
-and the second step is the definition of the behavior we are expecting:
+First steps: webpack default configuration process
 -  ```"entry"``` tells webpack where to look to initiate its bundle
 -  ```"output"``` tells where to return what it just created from your code
 -  ```"mode"``` tells how it should display the main.js code ( as minified 
 for production mode ( default behavior if not specified ) or a readable 
 version with development mode ).
 
-### Configurations with loaders
-#### What is loaders ?
+Next steps: customise your configuration
+- ```"module"``` tells what to transform different files according to ```"rules"``` using ```"loaders"```
+- ```"plugins"```customises webpack process behavior
+
+### :diamond_shape_with_a_dot_inside: LOADERS
+#### What are loaders ?
     Loaders are kind of 'tasks' or helpers that outputs/transform Javascript code from the differents languages your project uses ( css, sass, json, typescript etc ... ).
     
 - Sass requires :
@@ -74,8 +77,9 @@ version with development mode ).
     - ```css-loader```: translate css into CommonJS
     - ```sass-loader```: compile sass into css
     - ```node-sass```: required by sass-loader to complete its compiling
-
-To keep going setting Sass:
+    
+#### How ?
+Setting Sass:
     ```
     ...
     module: {
@@ -92,14 +96,15 @@ To keep going setting Sass:
     }
     ```
 
-## CACHING AND PLUGINS:
+### :diamond_shape_with_a_dot_inside: CACHING AND PLUGINS
+#### What is caching and plugins ?
 Caching is when a browser store a file and use it for next refreshes ( which actually helps the browser to reload faster ).
 However, in this case, our dynamic ```main.js``` file here will be stored at first then, the browser will check if there are different filename, if not it will must likely take the one in the cache ( even though we did changed some code within )
 So from now on we will set the environment to rebuild the whole html + inject dynamically the main.js file , all that thanks to plugins.
 
 Plugins give the options to customize webpack's building process, and in this case with html-webpack-plugin, will add a hash-content allowing to tell that even though the finename is the same, if there is any changes, this very file did changed.
 
-### Installation :
+#### How?
 Html-webpack-plugin: ``` npm install --save-dev html-webpack-plugin``` --> for each build, recreating an html file with hash-content if any changes have been made.
 But there are plenty more and you can also bind a templater ( ejs, pug, mustache, etc ...)
 
@@ -130,12 +135,12 @@ Later on run your ```npm run build``` and now you should be able to see within y
 
 
 
-## SPLIT CONFIG ACCORDING TO DEV MODE - DEVELOPMENT OR PRODUCTION:
-### What are those modes?
+### :diamond_shape_with_a_dot_inside: SPLIT CONFIG ACCORDING TO DEV MODE - DEVELOPMENT OR PRODUCTION
+#### What are those modes?
 - DEVELOPMENT: corresponds to the usual local development mode flow meaning your code will be with comment, well indented, readable, have the hot reloading, with bundle/build faster, uses localhost, etc ...
 - PRODUCTION: corresponds to your environment optimised meaning your code could be comments free, minimized and optmised, build slower, compressed etc ...
 
-### How?
+#### How ?
 We will need to split the config by there eponym tasks and we'll get three config we will merge using webpack-merge package.
 - webpack-merge: ```npm install --save-dev webpack-merge```
 - we will keep the common config as ```webpack.config.js```;
@@ -143,27 +148,27 @@ We will need to split the config by there eponym tasks and we'll get three confi
 - now we will split the config between those three files:
 - in ```webpack.config.js``` we will keep: [ entry, module and plugins ] so we are getting rid of [ mode, output ( which depend on dev or prod )]
 - then write for each the [ mode and output and import the 'global' config ].
-```
-const merge = require('webpack-merge');
-const config = require('./webpack.config');
+    ```
+    const merge = require('webpack-merge');
+    const config = require('./webpack.config');
+    ```
 
 | FILE                      | webpack.dev.js    | webpack.prod.js              |
 | ------------------------- |:-----------------:| ----------------------------:|
 | "mode":                   | "development"     | "production"                 |
 | "output": ..."filename":  | "main.js"         | "main-\[contentHash].js      |
-```
 
 - then replace your module.exports line with:
-```
-module.exports = merge( config, {
-    ....
-})
-```
+    ```
+    module.exports = merge( config, {
+        ....
+    })
+    ```
 - then adjust your ```package.json``` file scripts to set ```npm start``` command as development mode and ```npm run prod```, a command as production mode.
-```
-...
-"scripts": {
-    "start": "webpack --config webpack.dev.js",
-    "prod": "webpack --config webpack.prod.js"
-}
-```
+    ```
+    ...
+    "scripts": {
+        "start": "webpack --config webpack.dev.js",
+        "prod": "webpack --config webpack.prod.js"
+    }
+    ```
