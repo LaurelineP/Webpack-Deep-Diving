@@ -159,11 +159,20 @@ We will need to split the config by there eponym tasks and we'll get three confi
 | "output": ..."filename":  | "main.js"         | "main-\[contentHash].js      |
 
 - then replace your module.exports line with:
+<<<<<<< Updated upstream
     ```
     module.exports = merge( config, {
         ....
     })
     ```
+=======
+/!\ carefull to add correctly the end parenthese 
+```
+module.exports = merge( config, {
+    ....
+})
+```
+>>>>>>> Stashed changes
 - then adjust your ```package.json``` file scripts to set ```npm start``` command as development mode and ```npm run prod```, a command as production mode.
     ```
     ...
