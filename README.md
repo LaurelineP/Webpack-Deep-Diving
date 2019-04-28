@@ -156,23 +156,14 @@ We will need to split the config by there eponym tasks and we'll get three confi
 | FILE                      | webpack.dev.js    | webpack.prod.js              |
 | ------------------------- |:-----------------:| ----------------------------:|
 | "mode":                   | "development"     | "production"                 |
-| "output": ..."filename":  | "main.js"         | "main-\[contentHash].js      |
+| "output": ..."filename":  | "main.js"         | "main-[contentHash].js      |
 
 - then replace your module.exports line with:
-<<<<<<< Updated upstream
     ```
     module.exports = merge( config, {
         ....
     })
     ```
-=======
-/!\ carefull to add correctly the end parenthese 
-```
-module.exports = merge( config, {
-    ....
-})
-```
->>>>>>> Stashed changes
 - then adjust your ```package.json``` file scripts to set ```npm start``` command as development mode and ```npm run prod```, a command as production mode.
     ```
     ...
@@ -180,4 +171,16 @@ module.exports = merge( config, {
         "start": "webpack --config webpack.dev.js",
         "prod": "webpack --config webpack.prod.js"
     }
+    ```
+### :diamond_shape_with_a_dot_inside: HOT RELOADING
+#### What is hot reloading ?
+Hot reloading is the fact that, in this case, you'll not manually build each time your webpack whenever you modify anyfile.
+In here webpack-dev-server will allow you to apply any changes to your files and webpack-dev-server will rebuild everytime you hit "ctrl + s"
+allowing you to improve your developping workflow.
+
+#### How ?
+- install webpack-dev-server: ```npm install --save-dev webpack-dev-server````
+- adjust your ```package.json``` file:
+    ```
+    "start": "webpack-dev-server --config webpack.dev.js --open"
     ```
