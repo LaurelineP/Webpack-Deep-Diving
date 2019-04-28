@@ -6,7 +6,7 @@ than all you already have: cf "bundle"
 - bundles files and assets
 - manages dependencies.
 
-## Installation
+## START WEBPACK INSTALLATION
 Good to know:
 - current version: 4
 - requires a ```src``` folder
@@ -127,3 +127,43 @@ output: {
 
 NB: new HtmlWebpackPlugin() without argument will auto generate an html ( not taking care of the html you painfully wrote :p )
 Later on run your ```npm run build``` and now you should be able to see within your ```dist``` an html created as ```index.html```
+
+
+
+## SPLIT CONFIG ACCORDING TO DEV MODE - DEVELOPMENT OR PRODUCTION:
+### What are those modes?
+- DEVELOPMENT: corresponds to the usual local development mode flow meaning your code will be with comment, well indented, readable, have the hot reloading, with bundle/build faster, uses localhost, etc ...
+- PRODUCTION: corresponds to your environment optimised meaning your code could be comments free, minimized and optmised, build slower, compressed etc ...
+
+### How?
+We will need to split the config by there eponym tasks and we'll get three config we will merge using webpack-merge package.
+- webpack-merge: ```npm install --save-dev webpack-merge```
+- we will keep the common config as ```webpack.config.js```;
+- we'll add 2 files : ```webpack.dev.js``` ( for development mode ) and ```webpack.prod.js``` ( for production mode );
+- now we will split the config between those three files:
+- in ```webpack.config.js``` we will keep: [ entry, module and plugins ] so we are getting rid of [ mode, output ( which depend on dev or prod )]
+- then write for each the [ mode and output and import the 'global' config ].
+```
+const merge = require('webpack-merge');
+const config = require('./webpack.config');
+
+| FILE                      | webpack.dev.js    | webpack.prod.js              |
+| ------------------------- |:-----------------:| ----------------------------:|
+| "mode":                   | "development"     | "production"                 |
+| "output": ..."filename":  | "main.js"         | "main-\[contentHash].js      |
+```
+
+- then replace your module.exports line with:
+```
+module.exports = merge( config, {
+    ....
+})
+```
+- then adjust your ```package.json``` file scripts to set ```npm start``` command as development mode and ```npm run prod```, a command as production mode.
+```
+...
+"scripts": {
+    "start": "webpack --config webpack.dev.js",
+    "prod": "webpack --config webpack.prod.js"
+}
+```
