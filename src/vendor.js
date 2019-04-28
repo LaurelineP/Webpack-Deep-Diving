@@ -1,1 +1,1 @@
-alert('Vendor in here')
+console.log('Vendor in here');
