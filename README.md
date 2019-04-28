@@ -187,5 +187,8 @@ allowing you to improve your developping workflow.
 
 ### :diamond_shape_with_a_dot_inside: EXTRA USEFULL LOADERS
 - ```file-loader```: Emits the file into the output folder and returns the (relative) URL
--  ```htlm-loader```: Exports HTML as string. HTML is minimized when the compiler demands.
+- ```html-loader```: Exports HTML as string. HTML is minimized when the compiler demands.
+- set the rules ( as previously done ) you can add extra options too, check the doc for those two
 
+### :diamond_shape_with_a_dot_inside: EXTRA USEFULL PLUGIN
+- ```clean-webpack-plugin```: aim to clean/remove your build folder(s)
