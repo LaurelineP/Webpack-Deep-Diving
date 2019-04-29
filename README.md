@@ -1,57 +1,89 @@
 # Webpack Deep Diving
-A personnal project aiming to understand as much as possible the module bundler that is webpack.
-Webpack is a module bundler which means it processes plainty of files with various extensions 
-and outputs them in x files ( according to what you could configure ) but definitively fewer 
-than all you already have: cf "bundle"
-- bundles files and assets
-- manages dependencies.
+A personnal project aiming to understand as much as possible the module bundler that is webpack.  
+
+**[W E B P A C K](https://webpack.org):**  
+**Webpack** is a module bundler: it processes various kind of files in order to output them in one ore more bundle(s).  
+It allows to optimise your app by reducing its weight, allows to transform, translate, compile your throught
+ your written configuration, using *dependency graph* ( =>.
+
+**Tasks summary**
+|------------------------------|
+| **bundle** files and assets  |
+| **manage** dependencies      |
 
 ## :rocket: QUICK SETTUP
-Good to know:
-- current version: 4
-- requires a ```src``` folder
-- requires an ```index.js``` file inside ```src```;
+:warning: GOOD TO KNOW:
+- current version: **4**
+- requires a **```src``` folder**
+- requires an **```index.js``` file inside ```src```**;
 - output expected in ```dist``` : ```main.js```
 
 
 ### :round_pushpin: Install:
-- webpack:```npm install --save-dev webpack webpack-cli```
+- webpack:```npm install --save-dev webpack webpack-cli``` 
 - express: ```npm install express```
 
 
 ### :round_pushpin: Small setting adjustments:
-- create your directory at the root: src
-- ... in wich you create an ```index.js```
-- in package.json add a script: ```"build": "webpack",```
-- in .gitignore: add ```dist``` ( this folder will be rebuild each time you run the command )
-- in server.js: ```app.use(express.static( __dirname, 'dist'))``` ( resolving path for all static files )
-- in index.html, before the ending body tag: ```<script src="main.js"></script>```
+- create your directory **```src```**
+- ... in wich you create an **```index.js```**
+- in **package.json** add a script:
+    ```"build": "webpack",```
+- in ```.gitignore```: add ```dist``` and ```node_modules``` alowing to ignore those folders
+- in ```server.js```:
+    ```javascript
+    const express = require('express');
+    const app = express();
+    const url = 'http://localhost:',
+          port = 3000;
+
+    // build-in middleware function serving static files
+    app.use(express.static( __dirname, 'dist')) ( resolving path for all static files )
+    
+    app.get('/', (req, res) => res.sendFile( __dirname,'index.js')
+    app.listen('/', (err, data) => {
+        if(!err){
+            console.log(`Silver's listening at ${url}${port}`
+        }
+    }
+    ```
+- in ```index.html```, before the ending body tag: 
+    ```html
+    <script src="main.js"></script>
+    ```
 NB: At this stage, webpack is not requiring any config ( unlike the previous webpack versions with ```webpack.config.js``` ).
 
 
 Verification:
-Now if you run on your terminal ```npm build```: you should be able to notice that a directory ```'dist'``` was created in which one there is a ```main.js```.
-And then when you launch your server everything works fine.
+Now if you run in your terminal ```npm build```, you should notice a new directory ```dist``` just created in which one there is a ```main.js``` file.
+And then when you launch your server everything works fine --> ```npm start
 
 ## :wrench: CONFIGURATION:
 ### :diamond_shape_with_a_dot_inside: INITIATE DEFAULT BEHAVIOR CONFIGURATION
 So far, we did the just required setting to enable webpack default behavior.
 From now on, we'll get into the real configuration and replicate this default behavior:
 - create ```webpack.config.js```
-- add those lines to this file:
-    ``` 
-    const path = require('path');
-    module.exports = {
-            mode: "development",
+- init the config:
+    ```javascript
+    ./webpack.config.js
+    const path = require('path');                           // module resolving paths
+    module.exports = {                                      // config. init here
+            mode: "development",                            
             entry: "./src/index.js",
             output: {
                 filename: "main.js",
-                path: path.resolve(__dirname, "dist")
-            }
+                path: path.resolve(__dirname, "dist")       // __dirname is global
+            },
     }
     ```
-- in package.json: change start script:
-    ```"build": "webpack --config webpack.config.js"```
+- in ```package.json```: change start script:
+    ```json
+        ./package.json
+        scripts: {
+                    start: "node server.js"
+                    build: "webpack --config webpack.config.js
+                }
+    ```
 
 
 #### What is happening within webpack.config.js ?
