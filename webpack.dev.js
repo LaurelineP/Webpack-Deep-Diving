@@ -2,6 +2,8 @@ const path = require('path');
 const merge = require('webpack-merge');
 const config = require('./webpack.config');
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = merge( config, {
     mode: "development",
     output: {
@@ -19,5 +21,10 @@ module.exports = merge( config, {
                 ]
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/template.html',
+        })
+    ]
 })
