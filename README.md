@@ -80,8 +80,8 @@ From now on, we'll get into the real configuration and replicate this default be
     ```json
         ./package.json
         scripts: {
-                    start: "node server.js"
-                    build: "webpack --config webpack.config.js
+                    "start": "node server.js"
+                    "build": "webpack --config webpack.config.js
                 }
     ```
 
