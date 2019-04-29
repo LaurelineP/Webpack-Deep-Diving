@@ -111,9 +111,10 @@ Loaders in ```rules``` are kind of 'tasks' or helpers that outputs/transforms di
     - ```node-sass```: required by sass-loader to complete its compiling
     
 #### How ?
-Setting Sass:
-    ```javascript
-    ...
+Setting Sass in ```webpack.config.js```:  
+ ```javascript
+    //./webpack.config.js
+    //...
     module: {
         rules: [
             {
@@ -126,7 +127,7 @@ Setting Sass:
             }
         ]
     }
-    ```
+ ```
 
 ### :diamond_shape_with_a_dot_inside: CACHING AND PLUGINS
 #### What is caching and plugins ?
