@@ -55,17 +55,17 @@ NB: At this stage, webpack is not requiring any config ( unlike the previous web
 
 
 Verification:
-Now if you run in your terminal ```npm build```, you should notice a new directory ```dist``` just created in which one there is a ```main.js``` file.
-And then when you launch your server everything works fine --> ```npm start
+Now if you run in your terminal ```npm build```, you should notice a new directory ```dist``` just created in which one there is a ```main.js``` file.  
+And then when you launch your server everything works fine --> ```npm start```
 
 ## :wrench: CONFIGURATION:
 ### :diamond_shape_with_a_dot_inside: INITIATE DEFAULT BEHAVIOR CONFIGURATION
-So far, we did the just required setting to enable webpack default behavior.
-From now on, we'll get into the real configuration and replicate this default behavior:
+So far, we did the just required setting to enable **webpack default behavior**.  
+From now on, we'll get into the **real configuration and replicate this default behavior**:
 - create ```webpack.config.js```
 - init the config:
     ```javascript
-    ./webpack.config.js
+    //./webpack.config.js
     const path = require('path');                           // module resolving paths
     module.exports = {                                      // config. init here
             mode: "development",                            
@@ -88,21 +88,21 @@ From now on, we'll get into the real configuration and replicate this default be
 
 #### What is happening within webpack.config.js ?
 The general Webpack behavior is to check if there is any config file ( cf.: webpack.config.js ),
-if not it will run its default behavior through the cli ```webpack``` : requiring ```src``` & ```src/index.js``` to build the ```dist``` folder with its bundle ```main.js```
-First steps: webpack default configuration process
+if not it will run its default behavior through the cli ```webpack``` : requiring ```src``` & ```src/index.js``` to build the ```dist``` folder with its bundle ```main.js```  
+**First steps:** webpack default configuration process
 -  ```"entry"``` tells webpack where to look to initiate its bundle
 -  ```"output"``` tells where to return what it just created from your code
 -  ```"mode"``` tells how it should display the main.js code ( as minified 
 for production mode ( default behavior if not specified ) or a readable 
 version with development mode ).
 
-Next steps: customise your configuration
+**Next steps:** customise your configuration
 - ```"module"``` tells what to transform different files according to ```"rules"``` using ```"loaders"```
-- ```"plugins"```customises webpack process behavior
+- ```"plugins"``` customises webpack process behavior
 
 ### :diamond_shape_with_a_dot_inside: LOADERS
 #### What are loaders ?
-    Loaders are kind of 'tasks' or helpers that outputs/transform Javascript code from the differents languages your project uses ( css, sass, json, typescript etc ... ).
+Loaders in ```rules``` are kind of 'tasks' or helpers that outputs/transforms differents languages your project uses ( css, sass, json, typescript etc ... ) into commonJS or else.
     
 - Sass requires :
     - ```style-loader```: creating style nodes from JS strings
@@ -112,16 +112,16 @@ Next steps: customise your configuration
     
 #### How ?
 Setting Sass:
-    ```
+    ```javascript
     ...
     module: {
         rules: [
             {
-                test: /\.scss$/,        // regex testing files ending by .scss
+                test: /\.scss$/,        // regexp testing files ending by .scss
                 use: [
                     "style-loader",     // 3. inject css into html
                     "css-loader",       // 2. turns css into commonjs
-                    "sass-loader"       // 3. turns sass into css
+                    "sass-loader"       // 1. turns sass into css
                 ]
             }
         ]
@@ -144,7 +144,7 @@ But there are plenty more and you can also bind a templater ( ejs, pug, mustache
 - go to ```src```and create a ```template.html``` ( that our plugin will use )
 - write your html without the script linking to our ```main.js``` file as webpack will inject the correct file
 - in webpack add:
-```
+```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 ...
 plugins: [
@@ -153,7 +153,7 @@ plugins: [
     })
 ]
 ```
-- then modify the output property to add the hash content:
+- then modify the output property to add the **hash content**:
 ``` 
 ...
 output: {
@@ -162,15 +162,15 @@ output: {
 }
 ```
 
-NB: new HtmlWebpackPlugin() without argument will auto generate an html ( not taking care of the html you painfully wrote :p )
+NB: ```new HtmlWebpackPlugin()``` without argument will auto generate an html ( not taking care of the html you painfully wrote :p )
 Later on run your ```npm run build``` and now you should be able to see within your ```dist``` an html created as ```index.html```
 
 
 
 ### :diamond_shape_with_a_dot_inside: SPLIT CONFIG ACCORDING TO DEV MODE - DEVELOPMENT OR PRODUCTION
 #### What are those modes?
-- DEVELOPMENT: corresponds to the usual local development mode flow meaning your code will be with comment, well indented, readable, have the hot reloading, with bundle/build faster, uses localhost, etc ...
-- PRODUCTION: corresponds to your environment optimised meaning your code could be comments free, minimized and optmised, build slower, compressed etc ...
+- **DEVELOPMENT**: corresponds to the usual local development mode flow meaning your code will be with comment, well indented, readable, have the hot reloading, with bundle/build faster, uses localhost, etc ...
+- **PRODUCTION**: corresponds to your environment optimised meaning your code could be comments free, minimized and optmised, build slower, compressed etc ...
 
 #### How ?
 We will need to split the config by there eponym tasks and we'll get three config we will merge using webpack-merge package.
